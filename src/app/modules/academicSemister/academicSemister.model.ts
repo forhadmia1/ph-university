@@ -5,6 +5,7 @@ import {
   academicSemisterName,
   months,
 } from './academicSemister.constants';
+import AppError from '../../errors/appError';
 
 const academicSemisterModel = new Schema<TAcademicSemister>(
   {
@@ -58,7 +59,7 @@ academicSemisterModel.pre('save', async function (next) {
   });
 
   if (isSemisterExist) {
-    throw new Error('Semister is already exists!');
+    throw new AppError(400, 'Semister is already exists!');
   }
   next();
 });

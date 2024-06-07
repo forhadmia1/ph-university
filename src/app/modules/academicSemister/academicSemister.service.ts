@@ -1,10 +1,11 @@
+import AppError from '../../errors/appError';
 import { academicSemisterNameCodeMapper } from './academicSemister.constants';
 import { TAcademicSemister } from './academicSemister.interface';
 import { AcademicSemister } from './academicSemister.model';
 
 const createAcademicSemisterInDB = async (payload: TAcademicSemister) => {
   if (academicSemisterNameCodeMapper[payload.name] !== payload.code) {
-    throw new Error(`Invalid code for ${payload.name}`);
+    throw new AppError(500, `Invalid code for ${payload.name}`);
   }
 
   const result = await AcademicSemister.create(payload);
@@ -30,7 +31,7 @@ const updateAcademicSemister = async (id: string, payload: any) => {
     payload.code &&
     academicSemisterNameCodeMapper[payload.name] !== payload.code
   ) {
-    throw new Error('Invalid semister code');
+    throw new AppError(500, 'Invalid semister code');
   }
   const result = await AcademicSemister.findOneAndUpdate({ _id: id }, payload, {
     new: true,
