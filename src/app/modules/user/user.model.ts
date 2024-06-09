@@ -37,6 +37,11 @@ const UserSchema = new Schema<TUser>(
   },
 );
 
+// UserSchema.statics.isUserExists = async function (id: string) {
+//   const existingUser = await UserModel.findOne({ id });
+//   return existingUser;
+// };
+
 UserSchema.pre('save', async function (next) {
   const user = this;
   user.password = await bcrypt.hash(

@@ -6,8 +6,9 @@ const router = express.Router();
 
 router.post(
   '/create-student',
-  validateRequest(createStudentValidationSchema),
+  // validateRequest(createStudentValidationSchema),
   UserControllers.createStudent,
 );
+router.delete('/delete/:studentId', UserControllers.deleteStudent);
 
 export const UserRoutes = router;

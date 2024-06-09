@@ -1,3 +1,4 @@
+import { TStudent } from './student.interface';
 import { Student } from './student.model';
 
 const getAllStudentsFromDB = async () => {
@@ -30,8 +31,39 @@ const deleteStudentFromDB = async (id: string) => {
   return result;
 };
 
+const updateStudentIntoDB = async (id: string, payload: Partial<TStudent>) => {
+  const { name, guardian, localGuardian, ...rest } = payload;
+
+  const modifiedData: Record<string, unknown> = { ...rest };
+
+  if (name && Object.keys(name).length) {
+    for (const [key, value] of Object.entries(name)) {
+      modifiedData[`name.${key}`] = value;
+    }
+  }
+
+  if (guardian && Object.keys(guardian).length) {
+    for (const [key, value] of Object.entries(guardian)) {
+      modifiedData[`guardian.${key}`] = value;
+    }
+  }
+
+  if (localGuardian && Object.keys(localGuardian).length) {
+    for (const [key, value] of Object.entries(localGuardian)) {
+      modifiedData[`localGuardian.${key}`] = value;
+    }
+  }
+
+  const result = await Student.findOneAndUpdate({ id }, modifiedData, {
+    new: true,
+    runValidators: true,
+  });
+  return result;
+};
+
 export const StudentServices = {
   getAllStudentsFromDB,
   getSingleStudentFromDB,
   deleteStudentFromDB,
+  updateStudentIntoDB,
 };
