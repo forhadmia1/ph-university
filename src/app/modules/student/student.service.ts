@@ -89,7 +89,7 @@ const getAllStudentsFromDB = async (query: Record<string, unknown>) => {
     query,
   )
     .search(['name.firstName', 'email'])
-    .filter(['searchTerm', 'sort', 'limit', 'page', 'fields'])
+    .filter()
     .sort()
     .pagination()
     .select();
@@ -100,7 +100,6 @@ const getAllStudentsFromDB = async (query: Record<string, unknown>) => {
 };
 
 const getSingleStudentFromDB = async (id: string) => {
-  console.log(id);
   const result = await Student.findById(id)
     .populate('admissionSemister')
     .populate({
